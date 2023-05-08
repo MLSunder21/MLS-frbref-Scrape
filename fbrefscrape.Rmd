@@ -1,0 +1,1082 @@
+---
+title: "fbref scrape"
+author: "Andrew Holland"
+date: "2023-05-08"
+output: word_document
+---
+
+# TOP
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list = ls())
+```
+
+```{r}
+library(readxl)
+library(plm)
+library(stargazer)
+library(mctest)
+library(DescTools)
+library(effectsize)
+library(Rmisc)
+library(dplyr)
+library(car)
+library(ggplot2)
+library(psych)
+library(rmarkdown)
+library(freqdist)
+library(readxl)
+library(foreign)
+library(magrittr)
+library(descriptr)
+library(naniar)
+library(effectsize)
+library(strucchange)
+library(sjstats)
+library(olsrr)
+library(broom)
+library(Hmisc)
+library(fixest)
+library(effectsize)
+library(tidyverse)
+library(haven)
+library(ggiraph)
+library(ggiraphExtra)
+library(lmtest)
+library(skedastic)
+library(rvest)
+library(openxlsx)
+```
+
+```{r}
+options(scipen=999)
+```
+
+#ATLANTA UTD
+
+```{r}
+url <- "https://fbref.com/en/squads/1ebc1a5b/Atlanta-United-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+atlutd <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(atlutd) <- as.character(atlutd[1,])
+```
+
+```{r}
+atlutd <- atlutd[-1,]
+atlutd <- atlutd[-31,]
+atlutd <- atlutd[-31,]
+view(atlutd)
+```
+
+```{r}
+atlutd <- atlutd[, -c(34)]
+```
+
+#AUSTIN FC
+
+```{r}
+url <- "https://fbref.com/en/squads/b918956d/Austin-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+atx <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(atx) <- as.character(atx[1,])
+```
+
+```{r}
+atx <- atx[, -c(34)]
+```
+
+```{r}
+atx <- atx[-1,]
+atx <- atx[-26,]
+atx <- atx[-26,]
+```
+
+```{r}
+view(atx)
+```
+
+# MONTREAL
+
+```{r}
+url <- "https://fbref.com/en/squads/fc22273c/CF-Montreal-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+cfm <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(cfm) <- as.character(cfm[1,])
+```
+
+```{r}
+cfm <- cfm[, -c(34)]
+```
+
+```{r}
+cfm <- cfm[-1,]
+cfm <- cfm[-29,]
+cfm <- cfm[-29,]
+```
+
+```{r}
+view(cfm)
+```
+
+# CHARLOTTE
+
+```{r}
+url <- "https://fbref.com/en/squads/eb57545a/Charlotte-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+char <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(char) <- as.character(char[1,])
+```
+
+```{r}
+char <- char[, -c(34)]
+```
+
+```{r}
+char <- char[-1,]
+char <- char[-29,]
+char <- char[-29,]
+```
+
+```{r}
+view(char)
+```
+
+# CHICAGO
+
+```{r}
+url <- "https://fbref.com/en/squads/f9940243/Chicago-Fire-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+cfc <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(cfc) <- as.character(cfc[1,])
+```
+
+```{r}
+cfc <- cfc[, -c(34)]
+```
+
+```{r}
+cfc <- cfc[-1,]
+cfc <- cfc[-28,]
+cfc <- cfc[-28,]
+```
+
+```{r}
+view(cfc)
+```
+
+# COLORADO
+
+```{r}
+url <- "https://fbref.com/en/squads/415b4465/Colorado-Rapids-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+cr <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(cr) <- as.character(cr[1,])
+```
+
+```{r}
+cr <- cr[, -c(34)]
+```
+
+```{r}
+cr <- cr[-1,]
+cr <- cr[-30,]
+cr <- cr[-30,]
+```
+
+```{r}
+view(cr)
+```
+
+# COLUMBUS
+
+```{r}
+url <- "https://fbref.com/en/squads/529ba333/Columbus-Crew-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+crew <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(crew) <- as.character(crew[1,])
+```
+
+```{r}
+crew <- crew[, -c(34)]
+```
+
+```{r}
+crew <- crew[-1,]
+crew <- crew[-28,]
+crew <- crew[-28,]
+```
+
+```{r}
+view(crew)
+```
+
+# DC UNITED
+
+```{r}
+url <- "https://fbref.com/en/squads/44117292/DC-United-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+dcu <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(dcu) <- as.character(dcu[1,])
+```
+
+```{r}
+dcu <- dcu[, -c(34)]
+```
+
+```{r}
+dcu <- dcu[-1,]
+dcu <- dcu[-27,]
+dcu <- dcu[-27,]
+```
+
+```{r}
+view(dcu)
+```
+
+# FC CINCY
+
+```{r}
+url <- "https://fbref.com/en/squads/e9ea41b2/FC-Cincinnati-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+fcc <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(fcc) <- as.character(fcc[1,])
+```
+
+```{r}
+fcc <- fcc[, -c(34)]
+```
+
+```{r}
+fcc <- fcc[-1,]
+fcc <- fcc[-26,]
+fcc <- fcc[-26,]
+```
+
+```{r}
+view(fcc)
+```
+
+# FC DALLAS
+
+```{r}
+url <- "https://fbref.com/en/squads/15cf8f40/FC-Dallas-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+fcd <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(fcd) <- as.character(fcd[1,])
+```
+
+```{r}
+fcd <- fcd[, -c(34)]
+```
+
+```{r}
+fcd <- fcd[-1,]
+fcd <- fcd[-25,]
+fcd <- fcd[-25,]
+```
+
+```{r}
+view(fcd)
+```
+
+# HOUSTON
+
+```{r}
+url <- "https://fbref.com/en/squads/0d885416/Houston-Dynamo-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+hou <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(hou) <- as.character(hou[1,])
+```
+
+```{r}
+hou <- hou[, -c(34)]
+```
+
+```{r}
+hou <- hou[-1,]
+hou <- hou[-27,]
+hou <- hou[-27,]
+```
+
+```{r}
+view(hou)
+```
+
+# INTER MIAMI
+
+```{r}
+url <- "https://fbref.com/en/squads/cb8b86a2/Inter-Miami-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+miami <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(miami) <- as.character(miami[1,])
+```
+
+```{r}
+miami <- miami[, -c(34)]
+```
+
+```{r}
+miami <- miami[-1,]
+miami <- miami[-28,]
+miami <- miami[-28,]
+```
+
+```{r}
+view(miami)
+```
+
+# LA GALAXY
+
+```{r}
+url <- "https://fbref.com/en/squads/d8b46897/LA-Galaxy-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+lag <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(lag) <- as.character(lag[1,])
+```
+
+```{r}
+lag <- lag[, -c(34)]
+```
+
+```{r}
+lag <- lag[-1,]
+lag <- lag[-29,]
+lag <- lag[-29,]
+```
+
+```{r}
+view(lag)
+```
+
+# LAFC
+
+```{r}
+url <- "https://fbref.com/en/squads/81d817a3/Los-Angeles-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+lafc <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(lafc) <- as.character(lafc[1,])
+```
+
+```{r}
+lafc <- lafc[, -c(34)]
+```
+
+```{r}
+lafc <- lafc[-1,]
+lafc <- lafc[-26,]
+lafc <- lafc[-26,]
+```
+
+```{r}
+view(lafc)
+```
+
+# MINNESOTA
+
+```{r}
+url <- "https://fbref.com/en/squads/99ea75a6/Minnesota-United-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+minn <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(minn) <- as.character(minn[1,])
+```
+
+```{r}
+minn <- minn[, -c(34)]
+```
+
+```{r}
+minn <- minn[-1,]
+minn <- minn[-30,]
+minn <- minn[-30,]
+```
+
+```{r}
+view(minn)
+```
+
+# NASHVILLE
+
+```{r}
+url <- "https://fbref.com/en/squads/35f1b818/Nashville-SC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+nash <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(nash) <- as.character(nash[1,])
+```
+
+```{r}
+nash <- nash[, -c(34)]
+```
+
+```{r}
+nash <- nash[-1,]
+nash <- nash[-25,]
+nash <- nash[-25,]
+```
+
+```{r}
+view(nash)
+```
+
+# NEW ENGLAND
+
+```{r}
+url <- "https://fbref.com/en/squads/3c079def/New-England-Revolution-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+revs <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(revs) <- as.character(revs[1,])
+```
+
+```{r}
+revs <- revs[, -c(34)]
+```
+
+```{r}
+revs <- revs[-1,]
+revs <- revs[-27,]
+revs <- revs[-27,]
+```
+
+```{r}
+view(revs)
+```
+
+# NY RED BULLS
+
+```{r}
+url <- "https://fbref.com/en/squads/69a0fb10/New-York-Red-Bulls-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+nyrb <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(nyrb) <- as.character(nyrb[1,])
+```
+
+```{r}
+nyrb <- nyrb[, -c(34)]
+```
+
+```{r}
+nyrb <- nyrb[-1,]
+nyrb <- nyrb[-26,]
+nyrb <- nyrb[-26,]
+```
+
+```{r}
+view(nyrb)
+```
+
+# NYCFC
+
+```{r}
+url <- "https://fbref.com/en/squads/64e81410/New-York-City-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+nycfc <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(nycfc) <- as.character(nycfc[1,])
+```
+
+```{r}
+nycfc <- nycfc[, -c(34)]
+```
+
+```{r}
+nycfc <- nycfc[-1,]
+nycfc <- nycfc[-25,]
+nycfc <- nycfc[-25,]
+```
+
+```{r}
+view(nycfc)
+```
+
+# ORLANDO CITY
+
+```{r}
+url <- "https://fbref.com/en/squads/46ef01d0/Orlando-City-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+orl <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(orl) <- as.character(orl[1,])
+```
+
+```{r}
+orl <- orl[, -c(34)]
+```
+
+```{r}
+orl <- orl[-1,]
+orl <- orl[-27,]
+orl <- orl[-27,]
+```
+
+```{r}
+view(orl)
+```
+
+# PHILADELPHIA
+
+```{r}
+url <- "https://fbref.com/en/squads/46024eeb/Philadelphia-Union-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+phil <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(phil) <- as.character(phil[1,])
+```
+
+```{r}
+phil <- phil[, -c(34)]
+```
+
+```{r}
+phil <- phil[-1,]
+phil <- phil[-25,]
+phil <- phil[-25,]
+```
+
+```{r}
+view(phil)
+```
+
+# PORTLAND
+
+```{r}
+url <- "https://fbref.com/en/squads/d076914e/Portland-Timbers-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+port <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(port) <- as.character(port[1,])
+```
+
+```{r}
+port <- port[, -c(34)]
+```
+
+```{r}
+port <- port[-1,]
+port <- port[-26,]
+port <- port[-26,]
+```
+
+```{r}
+view(port)
+```
+
+# REAL SALT LAKE
+
+```{r}
+url <- "https://fbref.com/en/squads/f7d86a43/Real-Salt-Lake-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+rsl <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(rsl) <- as.character(rsl[1,])
+```
+
+```{r}
+rsl <- rsl[, -c(34)]
+```
+
+```{r}
+rsl <- rsl[-1,]
+rsl <- rsl[-29,]
+rsl <- rsl[-29,]
+```
+
+```{r}
+view(rsl)
+```
+
+# SAN JOSE
+
+```{r}
+url <- "https://fbref.com/en/squads/ca460650/San-Jose-Earthquakes-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+sj <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(sj) <- as.character(sj[1,])
+```
+
+```{r}
+sj <- sj[, -c(34)]
+```
+
+```{r}
+sj <- sj[-1,]
+sj <- sj[-25,]
+sj <- sj[-25,]
+```
+
+```{r}
+view(sj)
+```
+
+# SEATTLE
+
+```{r}
+url <- "https://fbref.com/en/squads/6218ebd4/Seattle-Sounders-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+sea <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(sea) <- as.character(sea[1,])
+```
+
+```{r}
+sea <- sea[, -c(34)]
+```
+
+```{r}
+sea <- sea[-1,]
+sea <- sea[-27,]
+sea <- sea[-27,]
+```
+
+```{r}
+view(sea)
+```
+
+# SPORTING KC
+
+```{r}
+url <- "https://fbref.com/en/squads/4acb0537/Sporting-KC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+skc <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(skc) <- as.character(skc[1,])
+```
+
+```{r}
+skc <- skc[, -c(34)]
+```
+
+```{r}
+skc <- skc[-1,]
+skc <- skc[-29,]
+skc <- skc[-29,]
+```
+
+```{r}
+view(skc)
+```
+
+# ST. LOUIS
+
+```{r}
+url <- "https://fbref.com/en/squads/bd97ac1f/St-Louis-City-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+stl <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(stl) <- as.character(stl[1,])
+```
+
+```{r}
+stl <- stl[, -c(34)]
+```
+
+```{r}
+stl <- stl[-1,]
+stl <- stl[-25,]
+stl <- stl[-25,]
+```
+
+```{r}
+view(stl)
+```
+
+# TORONTO FC
+
+```{r}
+url <- "https://fbref.com/en/squads/130f43fa/Toronto-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+tfc <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(tfc) <- as.character(tfc[1,])
+```
+
+```{r}
+tfc <- tfc[, -c(34)]
+```
+
+```{r}
+tfc <- tfc[-1,]
+tfc <- tfc[-30,]
+tfc <- tfc[-30,]
+```
+
+```{r}
+view(tfc)
+```
+
+# VANCOUVER
+
+```{r}
+url <- "https://fbref.com/en/squads/ab41cb90/Vancouver-Whitecaps-FC-Stats"
+```
+
+```{r}
+page <- read_html(url)
+```
+
+```{r}
+van <- page %>%
+  html_nodes("table") %>%
+  .[[1]] %>%
+  html_table(fill=TRUE)
+```
+
+```{r}
+colnames(van) <- as.character(van[1,])
+```
+
+```{r}
+van <- van[, -c(34)]
+```
+
+```{r}
+van <- van[-1,]
+van <- van[-26,]
+van <- van[-26,]
+```
+
+```{r}
+view(van)
+```
+
+# MERGE
+
+```{r}
+mls <- rbind(atlutd, atx, cfm, char, cfc, cr, crew, dcu, fcc, fcd, hou, lafc, lag, miami, minn, nash, nycfc, nyrb, orl, phil, port, revs, rsl, sea, sj, skc, stl, tfc, van)
+view(mls)
+```
+
+# EXCEL
+
+```{r}
+write.xlsx(mls, "mls.xlsx", sheetName = "Sheet 1")
+```
